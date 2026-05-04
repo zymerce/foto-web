@@ -1,7 +1,7 @@
 # Vercel deployment mapping
 
-- `dev` -> Development environment
-- `qa` -> Preview/Staging environment
+- `qa` -> Staging environment
 - `main` -> Production environment
+- `local/*` -> PR preview deployments
 
-Enable Vercel PR previews for feature branches.
+No hosted `dev` environment is used. Development happens on local machine branches (`local/*`).
