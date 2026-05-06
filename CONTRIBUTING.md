@@ -1,9 +1,10 @@
 # Contributing to foto-web
 
-## Branching
-- Long-lived branches: `dev`, `qa`, `main`
-- Create short-lived branches from `dev` using `local/<ticket-or-feature>`
-- Promotion flow is PR only: `local/* -> dev -> qa -> main`
+## Branching (Strict Rule)
+- Long-lived branches: `qa`, `main`
+- All new work must use short-lived branches named `feature/<name>`
+- Promotion flow is PR only: `feature/* -> qa -> main`
+- Direct push to `qa` or `main` is not allowed
 
 ## Pull Requests
 - Keep PRs small and focused.
