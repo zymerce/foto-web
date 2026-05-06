@@ -2,6 +2,6 @@
 
 - `qa` -> Staging environment
 - `main` -> Production environment
-- `feature/*` -> PR preview deployments
+- `local/*` -> PR preview deployments
 
-No hosted `dev` environment is used. Development happens on local machine branches (`feature/*`).
+No hosted `dev` environment is used. Development happens on local machine branches (`local/*`).
