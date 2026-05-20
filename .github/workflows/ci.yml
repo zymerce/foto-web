@@ -2,19 +2,35 @@ name: CI
 
 on:
   pull_request:
-    branches: [dev, qa, main]
+    branches: [qa, main]
   push:
-    branches: [dev, qa, main]
+    branches: [qa, main]
 
 jobs:
-  lint-build:
+  policy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Enforce PR policy and docs gate
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+          BASE_REF: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+        run: ./.github/scripts/ci_policy_check.sh
+
+  lint-type-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: ./.github/scripts/route_smoke.sh
       - run: npm run build

@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# foto-web
 
-## Getting Started
+Next.js frontend for fotoz.io deployed on Vercel.
 
-First, run the development server:
+## UI/Theming
+- Global design tokens use shadcn/tweakcn theme variables in `app/globals.css`.
+- Non-landing pages support theme mode persistence (`system -> light -> dark`) via top-right toggle.
+- Landing page (`/`) is intentionally fixed as a marketing surface and does not follow theme switching.
+- Client-only theme label rendering is hydration-safe (`ThemeManager` waits for client render before showing toggle label).
 
+## Auth navigation
+- Successful login redirects to `/app/home`.
+- Canonical authenticated surface is `/app/*` with separate studio and platform shells.
+- Legacy routes redirect to canonical routes:
+  - `/workspace` -> `/app/home`
+  - `/admin` -> `/app/admin/overview`
+  - `/support` -> `/app/platform/support/home`
+  - `/analyst` -> `/app/platform/home`
+  - `/customer` -> `/app/customer/selections`
+
+## Branch/deploy model
+- `qa` = stable QA deployment
+- `main` = production deployment
+- All work starts from `feature/<name>` and promotes by PR: `feature/* -> qa -> main`
+
+## Local development
 ```bash
+npm ci
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Required env keys
+- `NEXT_PUBLIC_APP_ENV`
+- `NEXT_PUBLIC_API_BASE_URL`
+- Optional / forward-compatible:
+  - `NEXT_PUBLIC_HELPER_DOWNLOAD_URL`
+  - current code does not read this yet
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Governance docs
+- `ARCHITECTURE.md`
+- `RUNBOOK.md`
+- `RELEASE.md`
+- `RELEASE_POLICY.md`
+- `docs/MESSAGING_CONTRACT.md`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Vercel behavior
+Only `qa` and `main` should deploy. Configure the Ignored Build Step in Vercel UI:
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+if [ "$VERCEL_GIT_COMMIT_REF" = "main" ] || [ "$VERCEL_GIT_COMMIT_REF" = "qa" ]; then exit 1; else exit 0; fi
+```

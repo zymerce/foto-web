@@ -1,4 +1,4 @@
-# Contributing to foto-web
+# Contributing to fotoz.io Web
 
 ## Branching (Strict Rule)
 - Long-lived branches: `qa`, `main`
@@ -7,14 +7,20 @@
 - Direct push to `qa` or `main` is not allowed
 - Before coding, sync with latest `qa` (`git fetch`, `git checkout qa`, `git pull`) and then create your feature branch
 
-## Pull Requests
-- Keep PRs small and focused.
-- Ensure CI is green (`lint`, `build`) before requesting review.
-- At least one approval is required.
+## Definition of Done (Blocking)
+- CI green (`lint`, typecheck, build)
+- Required PR sections complete (summary, validation, evidence, docs, release impact)
+- Docs updated for behavior/pipeline changes
+- Security-sensitive changes explicitly reviewed
+- Rollback plan documented
+
+## Planning ritual (mandatory)
+Before coding, include mini design in PR:
+- goal
+- constraints
+- impact (UI/API/data/infra)
+- test plan
+- rollout plan
 
 ## Commit style
-Use clear commits with scope prefixes when possible:
-- `feat:`
-- `fix:`
-- `chore:`
-- `docs:`
+Use clear commits with scope prefixes when possible: `feat:`, `fix:`, `chore:`, `docs:`.
